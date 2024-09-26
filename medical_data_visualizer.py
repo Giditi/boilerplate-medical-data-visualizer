@@ -32,7 +32,7 @@ def draw_cat_plot():
 
   # 7 Convert the data into long format and create a chart that shows the value counts of the categorical features using the following method provided by the seaborn library 
   fig, ax = plt.subplots()
-  ax=sns.catplot(kind='bar', data=df_cardio, x='variable', y='total', hue='value', col='cardio')
+  fig=sns.catplot(kind='bar', data=df_cardio, x='variable', y='total', hue='value', col='cardio').fig
 
   # 8 Get the figure for the output and store it in the fig variable
   #fig.tight_layout()
@@ -62,7 +62,7 @@ def draw_heat_map():
   #.rename(columns={'sex':'gender'})
 
   # 12 Calculate the correlation matrix and store it in the corr variable
-  corr = df_heat.corr()
+  corr = df_heat.corr(method='pearson')
 
   # 13 Generate a mask for the upper triangle and store it in the mask variable
   mask = np.triu(np.ones_like(corr)).astype(bool)
@@ -72,6 +72,6 @@ def draw_heat_map():
 
   # 15 Plot the correlation matrix using the method provided by the seaborn library import: sns.heatmap()
   ax=sns.heatmap(corr, mask=mask, annot=True, fmt=".1f", annot_kws={"size":7})
-  plt.xlabel( "variable")
-
+  
+  fig.savefig('heatmap.png')
   return fig
