@@ -6,12 +6,10 @@ import numpy as np
 # 1
 df = pd.read_csv('medical_examination.csv')
 
-# 2
-df['bmi']=round(df.weight**2 / df.height,2)
+# 2 calculate BMI
+df['bmi']=round(df.weight / ((df.height/100)**2),2)
 
 # 3 Normalize data by making 0 always good and 1 always bad. If the value of cholesterol or gluc is 1, set the value to 0. If the value is more than 1, set the value to 1.
-#df.loc[df['bmi'] > 25,'overweight'] = 1 
-#df.loc[df['bmi'] <= 25,'overweight'] = 0
 df['overweight'] = np.where(df['bmi'].values > 25, 1, 0)
 df = df.drop('bmi', axis=1)
 df['cholesterol'] = np.where(df['cholesterol'].values > 1, 1, 0)
@@ -48,6 +46,7 @@ def draw_heat_map():
   # 11
   #Clean the data. Filter out the following patient segments that represent incorrect data:
   #diastolic pressure is higher than systolic (Keep the correct data with (df['ap_lo'] <= df['ap_hi']))
+  df_heat = None
   flt_pressure= df['ap_lo'] <= df['ap_hi']
   #height is less than the 2.5th percentile (Keep the correct data with (df['height'] >= df['height'].quantile(0.025)))
   flt_height_ge25= df['height'] >= df['height'].quantile(0.025)
